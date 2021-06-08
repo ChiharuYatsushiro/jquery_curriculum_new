@@ -89,14 +89,12 @@
     <script>
       $(function() {
         $(".select").change(function() {
-          var v = $(this).val();
-          if (v == "all") {
-            $("ul.list li").each(function() {
-              $(this).show();
-            });
+          var valueSelect = $(this).val();
+          if (valueSelect  === "all") {
+            $(".list").children("li").show();
           } else {
-            $("ul.list li").each(function() {
-              if (v == $(this).data("category-type")) {
+            $(".list").children("li").each(function() {
+              if (valueSelect === $(this).data("category-type")) {
                 $(this).show();
               } else {
                 $(this).hide();
@@ -119,7 +117,6 @@
       // .change() セレクトボックスの値の変更をキャッチする関数
       // 【 対象要素.change( イベント処理関数 ) 】
       // 主に、input / select / textareaなどの要素に変更があった時にchange()は有効活用できる
-
       // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
     </script>
   </body>
