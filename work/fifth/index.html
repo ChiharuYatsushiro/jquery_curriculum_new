@@ -1,13 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>jQuery</title>
-    <link rel="stylesheet" href="../../common/css/reset.css">
-    <link rel="stylesheet" href="../../common/css/base.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <title>jQuery　chiharu</title>
+    <link rel="stylesheet" href="../../common/css/reset.css" />
+    <link rel="stylesheet" href="../../common/css/base.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -84,6 +87,24 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      $(function() {
+        $(".select").change(function() {
+          var v = $(this).val();
+          if (v == "all") {
+            $("ul.list li").each(function() {
+              $(this).show();
+            });
+          } else {
+            $("ul.list li").each(function() {
+              if (v == $(this).data("category-type")) {
+                $(this).show();
+              } else {
+                $(this).hide();
+              }
+            });
+          }
+        });
+      });
       // 今回やるのはソート機能です。
       // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
       // [処理の流れ]
@@ -93,9 +114,12 @@
       // [使うメソッド]
       // .show() 要素を表示させる
       // .hide() 要素を隠す
-      // .val() 要素のvalueを取得
+      // .val() 要素のvalueを取得 ex:<option value="all">All</option>
       // .data('') DOM要素にあるdata-~を取得できる
       // .change() セレクトボックスの値の変更をキャッチする関数
+      // 【 対象要素.change( イベント処理関数 ) 】
+      // 主に、input / select / textareaなどの要素に変更があった時にchange()は有効活用できる
+
       // $().each() DOM要素を1つずつループ処理をする（ループ内で$(this)を使うと要素がひとつずつ取得できる）
     </script>
   </body>

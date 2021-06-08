@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
   <head>
@@ -9,6 +10,23 @@
     <link rel="stylesheet" href="../../common/css/base.css">
     <link rel="stylesheet" href="./css/style.css">
   </head>
+  <script src="../../common/js/jquery.js"></script>
+  <script>
+    $(function(){
+      $('.modal-show').click(function (){
+        $('.modal').fadeIn(300);
+      })
+      $('.modal-close').click(function (){
+        $('.modal').fadeOut(300);
+      });
+    });
+    // 今回やるのはモーダルです。
+    // .modal-show をクリックすることで .modal をfadeInさせる。
+    // .modal-close をクリックで .modal をfadeOutさせる。
+    // .click() クリック時のイベントを登録する。
+    // .fadeIn() 一定時間かけてフェードインする。
+    // .fadeOut() 一定時間かけてフェードアウトする。
+  </script>
   <body>
     <div class="wrapper">
       <p class="modal-show">Click</p>
@@ -19,23 +37,6 @@
         </div>
       </div>
     </div>
-    <script src="../../common/js/jquery.js"></script>
-    <script>
-      $(function(){
-        $('.modal-show').click(function (){
-          $('.modal').fadeIn(300);
-        })
-        $('.modal-close').click(function (){
-          $('.modal').fadeOut(300);
-        });
-      });
-      
-      // 今回やるのはモーダルです。
-      // .modal-show をクリックすることで .modal をfadeInさせる。
-      // .modal-close をクリックで .modal をfadeOutさせる。
-      // .click() クリック時のイベントを登録する。
-      // .fadeIn() 一定時間かけてフェードインする。
-      // .fadeOut() 一定時間かけてフェードアウトする。
-    </script>
+    
   </body>
 </html>
