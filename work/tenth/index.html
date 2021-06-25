@@ -52,22 +52,27 @@
             },
           })
           .done(function (data) {
-            if (data.hits === 0) {
+            if (data.hits === 0) {//hitが0
               $(".message").append(errorMessage);
               var errorMessage ='<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
-              $(".message").append(errorMessage);
-            } else {
+              $(".message").append(zeroMessage);
+            } else if (searchWord　=== "") {//文字が未入力
+              var zeroMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
+                console.log(zeroMessage);
+            $(".message").append(zeroMessage);
+            } else {//成功
               console.log(data);
               $.each(data.Items, function (i, element) {
                 var list ='<li class="lists__item">'+'<div class="lists__item__inner">'+'<a href="'+ data.Items[i].Item.itemUrl +'" class="lists__item__link" target="_blank">'+'<img src="'+ data.Items[i].Item.largeImageUrl +'" class="lists__item__img" alt="'+ data.Items[i].Item.title +'">'+'<p class="lists__item__detail">作品名：'+ data.Items[i].Item.title +'</p>'+'<p class="lists__item__detail">作者　：'+ data.Items[i].Item.author +'：</p>'+'<p class="lists__item__detail">出版社：'+ data.Items[i].Item.publisherName +'</p>'+'</a>'+'</div></li>';
                 $(".lists").append(list);
-                   console.log(data.Items[i].Item.itemUrl);
+                   console.log(data.Items[i].Item.title);
               });
             }
           })
-          .fail(function(data){
-            var errorMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
-            $(".message").append(errorMessage);
+          .fail(function(data){//通信エラー
+            var dataErrorMessage = 　'<p class="error-message">ページの読み込みに失敗しました。</>'
+              console.log(dataErrorMessage);
+            $(".message").append(dataErrorMessage);
           });
         });
       });
