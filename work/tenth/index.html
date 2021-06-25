@@ -1,13 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>jQuery</title>
-    <link rel="stylesheet" href="../../common/css/reset.css">
-    <link rel="stylesheet" href="../../common/css/base.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <title>jQuery chiharu</title>
+    <link rel="stylesheet" href="../../common/css/reset.css" />
+    <link rel="stylesheet" href="../../common/css/base.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <div class="wrap">
@@ -17,7 +20,12 @@
         </div>
         <div class="search">
           <div class="search__text">
-            <input type="text" class="search__text__input" placeholder="検索する" data-js="search-word">
+            <input
+              type="text"
+              class="search__text__input"
+              placeholder="検索する"
+              data-js="search-word"
+            />
           </div>
           <button class="search__btn" data-js="search-btn">検索する</button>
         </div>
@@ -28,6 +36,73 @@
     <script src="../../common/js/jquery.js"></script>
     <script src="./js/appid.js"></script>
     <script>
+      $(function () {
+        $(".search__btn").on("click", function () {
+          var searchWord = $("input").val();
+          console.log(searchWord);
+          $.ajax({
+            url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522",
+            type: "GET",
+            datatype: "json",
+            data: {
+              applicationId: appId,
+              booksGenreId: "001",
+              hits: 20,
+              keyword: searchWord,
+            },
+          })
+          .done(function (data) {
+            if (data.hits === 0) {
+              $(".message").append(errorMessage);
+              var errorMessage ='<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
+              $(".message").append(errorMessage);
+            } else {
+              console.log(data);
+              $.each(data.Items, function (i, element) {
+                var list ='<li class="lists__item">'+'<div class="lists__item__inner">'+'<a href="'+ data.Items[i].Item.itemUrl +'" class="lists__item__link" target="_blank">'+'<img src="'+ data.Items[i].Item.largeImageUrl +'" class="lists__item__img" alt="'+ data.Items[i].Item.title +'">'+'<p class="lists__item__detail">作品名：'+ data.Items[i].Item.title +'</p>'+'<p class="lists__item__detail">作者　：'+ data.Items[i].Item.author +'：</p>'+'<p class="lists__item__detail">出版社：'+ data.Items[i].Item.publisherName +'</p>'+'</a>'+'</div></li>';
+                $(".lists").append(list);
+                   console.log(data.Items[i].Item.itemUrl);
+              });
+            }
+          })
+          .fail(function(data){
+            var errorMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
+            $(".message").append(errorMessage);
+          });
+        });
+      });
+
+
+      // .関数は別で定義して使い回す。
+      //例：
+      // $('.test-1').on('click', function() {
+      //     test(); // 定義したtestという関数の実行
+      // });
+      // $('.test-2').on('click', function() {
+      // 　　test(); // 定義したtestという関数の実行
+      // });
+      //
+      // function test() {
+      // '.test-1'と'.test-2'がクリックされたときの処理がここに書かれている
+      // }
+
+      // 【API（Application Programming Interface）とは】
+      // - 外部サーバーからデータの一部を拝借し、連帯して利用ができるもの
+
+      // 【httpメソッドのGETとPOSTの説明】
+      // - [HTTPとは？]サーバとブラウザなどの送受信をするための取り決め。交通ルールのようなもの。
+      //   URLの表記が「http://」で始まるのは、通信にHTTPを使うという意味。
+
+      // -[HTTPメソッドとは?]クライアントがサーバーに対してリクエストを投げるときに「サーバーにしてほしい操作」を伝えるために使う。
+      //  ※Webサイトの制作におけるクライアントとは、ブラウザのこと
+
+      // -[GET]ページを表示する操作のみを行う。HTMLファイルや画像ファイルなどを要求するときに使われるメソッド。URLの後ろに送りたいデータを付与して送る。
+      //   クライアントがサーバーからデータを取得するときに使う。
+
+      // -[POST]データを登録する操作をする時に使用する。HTTPリクエスト内のメッセージボディにデータを含めて送る。クライアントがサーバーにデータを追加できる。
+      //   POST送信の場合は、URLなどの見た目では送信データはわからないので、大量のデータを送信したい時はPOST送信。
+      //
+
       // 楽天ブックスの総合検索APIを使って製作してください。
       // answerの挙動を良く見てね！
       //
@@ -71,7 +146,7 @@
       // </li>
       //
       // 取得できた書籍の件数をもとに、ページャを作成しましょう
-      // ページャの条件
+      // ページの条件
       // ├ 「現在のページ数」と「全てのページ数」が表示されている
       // ├ 「前へ」と「次へ」のボタンがある
       // ├ 1ページ目では「前へ」に、最後のページでは「次へ」にdisabledクラスをつけて非活性（使用不能）にする
