@@ -37,12 +37,10 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
-        var pageNum = 0;//グローバル変数
+        var pageNum = 1;//グローバル変数
         $(".search__btn").on("click", function () {
           $(".message").empty();
-          console.log(pageNum);
-          pageNum = pageNum + 1;
-          $(".ul").empty();
+          $(".lists").empty();
           var searchWord = $("input").val();
           console.log(searchWord);
           $.ajax({
@@ -68,6 +66,8 @@
                 $(".lists").append(list);
                 console.log(data.Items[i].Item.title);
               });
+              var templePager = '<div class="pager" data-js="pager"><div class="counter"><span class="counter-current"></span>/<span class="counter-all"></span></div><div class="btn-wrapper"><a class="btn-item" data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
+                $(".container").append(templePager);
             }
           })
           .fail(function(data){//通信エラー
