@@ -37,7 +37,12 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
+        var pageNum = 0;//グローバル変数
         $(".search__btn").on("click", function () {
+          $(".message").empty();
+          console.log(pageNum);
+          pageNum = pageNum + 1;
+          $(".ul").empty();
           var searchWord = $("input").val();
           console.log(searchWord);
           $.ajax({
@@ -48,34 +53,46 @@
               applicationId: appId,
               booksGenreId: "001",
               hits: 20,
+              page: pageNum,
               keyword: searchWord,
             },
           })
           .done(function (data) {
             if (data.hits === 0) {//hitが0
-              $(".message").append(errorMessage);
-              var errorMessage ='<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
+              var zeroMessage ='<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
               $(".message").append(zeroMessage);
-            } else if (searchWord　=== "") {//文字が未入力
-              var zeroMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
-                console.log(zeroMessage);
-            $(".message").append(zeroMessage);
             } else {//成功
               console.log(data);
               $.each(data.Items, function (i, element) {
                 var list ='<li class="lists__item">'+'<div class="lists__item__inner">'+'<a href="'+ data.Items[i].Item.itemUrl +'" class="lists__item__link" target="_blank">'+'<img src="'+ data.Items[i].Item.largeImageUrl +'" class="lists__item__img" alt="'+ data.Items[i].Item.title +'">'+'<p class="lists__item__detail">作品名：'+ data.Items[i].Item.title +'</p>'+'<p class="lists__item__detail">作者　：'+ data.Items[i].Item.author +'：</p>'+'<p class="lists__item__detail">出版社：'+ data.Items[i].Item.publisherName +'</p>'+'</a>'+'</div></li>';
                 $(".lists").append(list);
-                   console.log(data.Items[i].Item.title);
+                console.log(data.Items[i].Item.title);
               });
             }
           })
           .fail(function(data){//通信エラー
-            var dataErrorMessage = 　'<p class="error-message">ページの読み込みに失敗しました。</>'
-              console.log(dataErrorMessage);
-            $(".message").append(dataErrorMessage);
+            var errorMessage = 　'<p class="error-message">その他のエラーが発生しました。</>'
+            if(data.status === 400){
+              errorMessage = '<p class="error-message">検索文字が入力されていません。</>'
+            } else if(data.status === 404){
+              errorMessage = '<p class="error-message">対象のデータが存在しません。</>'
+            }　else if(data.status === 429){
+              errorMessage = '<p class="error-message">リクエストが多すぎます。</>'
+            }　else if(data.status === 500){
+              errorMessage = '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</>'
+            }　else if(data.status === 503){
+              errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</>'
+            }　
+              // console.log(data.responseJSON.error_description);
+            $(".message").append(errorMessage);
           });
         });
       });
+    
+      // else if (searchWord　=== "") {//文字が未入力
+      //         var zeroMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
+      //           console.log(zeroMessage);
+      //       $(".message").append(zeroMessage);
 
       // .関数は別で定義して使い回す。
       //例：
@@ -91,7 +108,7 @@
       // }
 
       // 【API（Application Programming Interface）とは】
-      // - 外部サーバーからデータの一部を拝借し、連帯して利用ができるもの
+      // - 外部サーバーからデータの一部を拝借し、連帯して利用ができるもの？
 
       // 【httpメソッドのGETとPOSTの説明】
       // - [HTTPとは？]サーバとブラウザなどの送受信をするための取り決め。交通ルールのようなもの。
