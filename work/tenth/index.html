@@ -66,8 +66,12 @@
                 $(".lists").append(list);
                 console.log(data.Items[i].Item.title);
               });
-              var templePager = '<div class="pager" data-js="pager"><div class="counter"><span class="counter-current"></span>/<span class="counter-all"></span></div><div class="btn-wrapper"><a class="btn-item" data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
+              var templePager = '<div class="pager" data-js="pager">'+'<div class="counter">'+'<span class="counter-current">'+ data.page +'</span>/<span class="counter-all">'+ data.pageCount +'</span>'+'</div>'+'<div class="btn-wrapper">'+'<a class="btn-item" data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
                 $(".container").append(templePager);
+                if(data.page === 1){
+                  $('.btn-item').prop('disabled', true);
+                  console.log($('.btn-item'));
+                }
             }
           })
           .fail(function(data){//通信エラー

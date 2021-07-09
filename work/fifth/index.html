@@ -90,14 +90,14 @@
       $(function() {
         $(".select").change(function() {
           var valueSelect = $(this).val();
-          if (valueSelect  === "all") {
+          if (valueSelect === "all") {
             $(".list").children("li").show();
           } else {
-            $(".list").children("li").each(function() {
-              if (valueSelect === $(this).data("category-type")) {
-                $(this).show();
+            $(".list").children("li").each(function(index, element) {
+              if (valueSelect === $(element).data("category-type")) {
+                $(element).show();
               } else {
-                $(this).hide();
+                $(element).hide();
               }
             });
           }
