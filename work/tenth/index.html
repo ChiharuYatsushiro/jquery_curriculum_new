@@ -37,7 +37,8 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
-        var pageNum = 1;//グローバル変数
+        var pageNum = 1;//グローバル変数]
+        console.log(data.page);
         $(".search__btn").on("click", function () {
           $(".message").empty();
           $(".lists").empty();
@@ -67,15 +68,16 @@
                 console.log(data.Items[i].Item.title);
               });
               var templePager = '<div class="pager" data-js="pager">'+'<div class="counter">'+'<span class="counter-current">'+ data.page +'</span>/<span class="counter-all">'+ data.pageCount +'</span>'+'</div>'+'<div class="btn-wrapper">'+'<a class="btn-item" data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
-                $(".container").append(templePager);
-                if(data.page === 1){
-                  $('.btn-item').prop('disabled', true);
-                  console.log($('.btn-item'));
-                }
-            }
+              $(".container").append(templePager);//ページの作成
+              $('.btn-item').on("click", function(event) {
+                event.preventDefault();
+                  if(data.page <= 1){
+                    $('.btn-item[data-js="page-prev"]').addClass('disabled');
+                  }
+            })}
           })
-          .fail(function(data){//通信エラー
-            var errorMessage = 　'<p class="error-message">その他のエラーが発生しました。</>'
+          .fail(function(data){//各エラー
+            var errorMessage = '<p class="error-message">その他のエラーが発生しました。</>'
             if(data.status === 400){
               errorMessage = '<p class="error-message">検索文字が入力されていません。</>'
             } else if(data.status === 404){
@@ -92,12 +94,7 @@
           });
         });
       });
-    
-      // else if (searchWord　=== "") {//文字が未入力
-      //         var zeroMessage = 　'<p class="error-message">検索文字が入力されていません。</>'
-      //           console.log(zeroMessage);
-      //       $(".message").append(zeroMessage);
-
+  
       // .関数は別で定義して使い回す。
       //例：
       // $('.test-1').on('click', function() {
