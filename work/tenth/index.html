@@ -37,8 +37,6 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
-        var pageNum = 1;//グローバル変数]
-        console.log(data.page);
         $(".search__btn").on("click", function () {
           $(".message").empty();
           $(".lists").empty();
@@ -52,7 +50,7 @@
               applicationId: appId,
               booksGenreId: "001",
               hits: 20,
-              page: pageNum,
+              page: 1,
               keyword: searchWord,
             },
           })
@@ -61,20 +59,22 @@
               var zeroMessage ='<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
               $(".message").append(zeroMessage);
             } else {//成功
-              console.log(data);
+              // console.log(data);
+              console.log(data.pageCount);
               $.each(data.Items, function (i, element) {
                 var list ='<li class="lists__item">'+'<div class="lists__item__inner">'+'<a href="'+ data.Items[i].Item.itemUrl +'" class="lists__item__link" target="_blank">'+'<img src="'+ data.Items[i].Item.largeImageUrl +'" class="lists__item__img" alt="'+ data.Items[i].Item.title +'">'+'<p class="lists__item__detail">作品名：'+ data.Items[i].Item.title +'</p>'+'<p class="lists__item__detail">作者　：'+ data.Items[i].Item.author +'：</p>'+'<p class="lists__item__detail">出版社：'+ data.Items[i].Item.publisherName +'</p>'+'</a>'+'</div></li>';
                 $(".lists").append(list);
                 console.log(data.Items[i].Item.title);
               });
-              var templePager = '<div class="pager" data-js="pager">'+'<div class="counter">'+'<span class="counter-current">'+ data.page +'</span>/<span class="counter-all">'+ data.pageCount +'</span>'+'</div>'+'<div class="btn-wrapper">'+'<a class="btn-item" data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
+              var templePager = '<div class="pager" data-js="pager">'+'<div class="counter">'+'<span class="counter-current">'+ data.page +'</span>/<span class="counter-all">'+ data.pageCount +'</span>'+'</div>'+'<div class="btn-wrapper">'+'<a class="btn-item " data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>'
               $(".container").append(templePager);//ページの作成
               $('.btn-item').on("click", function(event) {
-                event.preventDefault();
-                  if(data.page <= 1){
-                    $('.btn-item[data-js="page-prev"]').addClass('disabled');
-                  }
-            })}
+                event.preventDefault();//aタグの無効化
+              });
+              if(data.page <= 1){
+              　$('.btn-item[data-js="page-prev"]').addClass('disabled').prop("disabled", true)
+              } 
+            };
           })
           .fail(function(data){//各エラー
             var errorMessage = '<p class="error-message">その他のエラーが発生しました。</>'
@@ -170,7 +170,7 @@
       // ページの条件
       // ├ 「現在のページ数」と「全てのページ数」が表示されている
       // ├ 「前へ」と「次へ」のボタンがある
-      // ├ 1ページ目では「前へ」に、最後のページでは「次へ」にdisabledクラスをつけて非活性（使用不能）にする
+      // ├ 1ページ目では「前へ」に、最後のページでは「次へ」にクラスをつけて非活性（使用不能）にする
       // └ 1ページしかない場合はどちらもdisabledクラスをつけて非活性にする
       //
       // ページャのテンプレート
