@@ -39,7 +39,8 @@
       $(function () {
         $(".search__btn").on("click", function () {
           $(".message").empty();
-          $(".lists").empty();
+          $(".list").empty();
+          $(".pager").empty();
           var searchWord = $("input").val();
           console.log(searchWord);
           $.ajax({
@@ -60,7 +61,7 @@
               $(".message").append(zeroMessage);
             } else {//成功
               // console.log(data);
-              console.log(data.pageCount);
+              console.log(data.page);
               $.each(data.Items, function (i, element) {
                 var list ='<li class="lists__item">'+'<div class="lists__item__inner">'+'<a href="'+ data.Items[i].Item.itemUrl +'" class="lists__item__link" target="_blank">'+'<img src="'+ data.Items[i].Item.largeImageUrl +'" class="lists__item__img" alt="'+ data.Items[i].Item.title +'">'+'<p class="lists__item__detail">作品名：'+ data.Items[i].Item.title +'</p>'+'<p class="lists__item__detail">作者　：'+ data.Items[i].Item.author +'：</p>'+'<p class="lists__item__detail">出版社：'+ data.Items[i].Item.publisherName +'</p>'+'</a>'+'</div></li>';
                 $(".lists").append(list);
@@ -71,7 +72,7 @@
               $('.btn-item').on("click", function(event) {
                 event.preventDefault();//aタグの無効化
               });
-              if(data.page <= 1){
+              if(data.page <= 1){//1ページ目「前へ」の非活性化
               　$('.btn-item[data-js="page-prev"]').addClass('disabled').prop("disabled", true)
               } 
             };
