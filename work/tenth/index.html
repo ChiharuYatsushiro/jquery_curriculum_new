@@ -70,30 +70,26 @@
               console.log(data.page);
               $.each(data.Items, function (i, element) {
                 var list =
-                  '<li class="lists__item">' +
-                  '<div class="lists__item__inner">' +
-                  '<a href="' +
-                  data.Items[i].Item.itemUrl +
-                  '" class="lists__item__link" target="_blank">' +
-                  '<img src="' +
-                  data.Items[i].Item.largeImageUrl +
-                  '" class="lists__item__img" alt="' +
-                  data.Items[i].Item.title +
-                  '">' +
+                  '<li class="lists__item">' + '<div class="lists__item__inner">' +
+                  '<a href="' + data.Items[i].Item.itemUrl + '" class="lists__item__link" target="_blank">' +
+                  '<img src="' + data.Items[i].Item.largeImageUrl + '" class="lists__item__img" alt="' + data.Items[i].Item.title + '">' +
                   '<p class="lists__item__detail">作品名：' +
-                  data.Items[i].Item.title +
-                  "</p>" +
+                  data.Items[i].Item.title + "</p>" +
                   '<p class="lists__item__detail">作者　：' +
-                  data.Items[i].Item.author +
-                  "：</p>" +
+                  data.Items[i].Item.author + "：</p>" +
                   '<p class="lists__item__detail">出版社：' +
                   data.Items[i].Item.publisherName +
-                  "</p>" +
-                  "</a>" +
-                  "</div></li>";
+                  "</p>" + "</a>" + "</div></li>";
                 $(".lists").append(list);
                 console.log(data.Items[i].Item.title);
               });
+              var templePager =
+                  '<div class="pager" data-js="pager">' +　
+                  '<div class="counter">' + '<span class="counter-current">' +　data.page +　'</span>/<span class="counter-all">' +　data.pageCount +　"</span>" +　"</div>" +
+                  '<div class="btn-wrapper">' +
+                  '<a class="btn-item " data-js="page-prev" href="">前へ</a>' +
+                  '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
+                $(".container").append(templePager); //ページの作成
             }
           });
         }
@@ -151,21 +147,21 @@
         //             "</p>" +
         //             "</a>" +
         //             "</div></li>";
-        //           $(".lists").append(list);
-        //           console.log(data.Items[i].Item.title);
-        //         });
-        //         var templePager =
-        //           '<div class="pager" data-js="pager">' +
-        //           '<div class="counter">' +
-        //           '<span class="counter-current">' +
-        //           data.page +
-        //           '</span>/<span class="counter-all">' +
-        //           data.pageCount +
-        //           "</span>" +
-        //           "</div>" +
-        //           '<div class="btn-wrapper">' +
-        //           '<a class="btn-item " data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>';
-        //         $(".container").append(templePager); //ページの作成
+        //   $(".lists").append(list);
+        //   console.log(data.Items[i].Item.title);
+        // });
+        // var templePager =
+        //   '<div class="pager" data-js="pager">' +
+        //   '<div class="counter">' +
+        //   '<span class="counter-current">' +
+        //   data.page +
+        //   '</span>/<span class="counter-all">' +
+        //   data.pageCount +
+        //   "</span>" +
+        //   "</div>" +
+        //   '<div class="btn-wrapper">' +
+        //   '<a class="btn-item " data-js="page-prev" href="">前へ</a><a class="btn-item" data-js="page-next" href="">次へ</a></div></div>';
+        // $(".container").append(templePager); //ページの作成
         //         $(".btn-item").on("click", function (event) {
         //           event.preventDefault(); //aタグの無効化
         //         });
