@@ -39,6 +39,8 @@
       $(function () {
         $(".search__btn").on('click', function () {
          getBooks();
+         $("ul.list").empty();
+         $(".message").empty();
         });
 
         // $('次へボタン').on('click', function () {
@@ -48,6 +50,8 @@
         // $('前へボタン').on('click', function () {
         //   getBooks()
         // });
+
+        // TODO:doneとfailの関数化
         function getBooks() {// 本を検索する処理
           var searchWord = $("input").val();
           $.ajax({
@@ -91,6 +95,28 @@
                   '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
                 $(".container").append(templePager); //ページの作成
             }
+          }).fail(function (data) {
+              //各エラー
+              var errorMessage =
+                '<p class="error-message">その他のエラーが発生しました。</>';
+              if (data.status === 400) {
+                errorMessage =
+                  '<p class="error-message">検索文字が入力されていません。</>';
+              } else if (data.status === 404) {
+                errorMessage =
+                  '<p class="error-message">対象のデータが存在しません。</>';
+              } else if (data.status === 429) {
+                errorMessage =
+                  '<p class="error-message">リクエストが多すぎます。</>';
+              } else if (data.status === 500) {
+                errorMessage =
+                  '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</>';
+              } else if (data.status === 503) {
+                errorMessage =
+                  '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</>';
+              }
+              // console.log(data.responseJSON.error_description);
+              $(".message").append(errorMessage);
           });
         }
       });
@@ -121,32 +147,32 @@
         //           '<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
         //         $(".message").append(zeroMessage);
         //       } else {
-        //         //成功
-        //         // console.log(data);
-        //         console.log(data.page);
-        //         $.each(data.Items, function (i, element) {
-        //           var list =
-        //             '<li class="lists__item">' +
-        //             '<div class="lists__item__inner">' +
-        //             '<a href="' +
-        //             data.Items[i].Item.itemUrl +
-        //             '" class="lists__item__link" target="_blank">' +
-        //             '<img src="' +
-        //             data.Items[i].Item.largeImageUrl +
-        //             '" class="lists__item__img" alt="' +
-        //             data.Items[i].Item.title +
-        //             '">' +
-        //             '<p class="lists__item__detail">作品名：' +
-        //             data.Items[i].Item.title +
-        //             "</p>" +
-        //             '<p class="lists__item__detail">作者　：' +
-        //             data.Items[i].Item.author +
-        //             "：</p>" +
-        //             '<p class="lists__item__detail">出版社：' +
-        //             data.Items[i].Item.publisherName +
-        //             "</p>" +
-        //             "</a>" +
-        //             "</div></li>";
+        // //成功
+        // // console.log(data);
+        // console.log(data.page);
+        // $.each(data.Items, function (i, element) {
+        //   var list =
+        //     '<li class="lists__item">' +
+        //     '<div class="lists__item__inner">' +
+        //     '<a href="' +
+        //     data.Items[i].Item.itemUrl +
+        //     '" class="lists__item__link" target="_blank">' +
+        //     '<img src="' +
+        //     data.Items[i].Item.largeImageUrl +
+        //     '" class="lists__item__img" alt="' +
+        //     data.Items[i].Item.title +
+        //     '">' +
+        //     '<p class="lists__item__detail">作品名：' +
+        //     data.Items[i].Item.title +
+        //     "</p>" +
+        //     '<p class="lists__item__detail">作者　：' +
+        //     data.Items[i].Item.author +
+        //     "：</p>" +
+        //     '<p class="lists__item__detail">出版社：' +
+        //     data.Items[i].Item.publisherName +
+        //     "</p>" +
+        //     "</a>" +
+        //     "</div></li>";
         //   $(".lists").append(list);
         //   console.log(data.Items[i].Item.title);
         // });
