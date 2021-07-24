@@ -39,8 +39,8 @@
       $(function () {
         $(".search__btn").on('click', function () {
          getBooks();
-         $("ul.list").empty();
          $(".message").empty();
+         $("ul.list").empty();
         });
 
         // $('次へボタン').on('click', function () {
@@ -51,7 +51,6 @@
         //   getBooks()
         // });
 
-        // TODO:doneとfailの関数化
         function getBooks() {// 本を検索する処理
           var searchWord = $("input").val();
           $.ajax({
@@ -66,23 +65,24 @@
               keyword: searchWord,
             },
           }).done(function(data) {
-            // success(data);
-            if(data.hit === 0){//成功だがhitが0の場合
+            if(data.hits === 0 ){//成功だが、hitが0の場合
               successZero(data);
-            } else {
+            } else {////成功し、アイテムとページャの追加の場合
               successGet(data);
             }
           }).fail(function (data) {
-            error(data);
+            failError(data);
           });
         }
         
-        function successZero(data) {//成功だがhitが0の場合
+        function successZero(data) {//成功だが、hitが0の場合
           var zeroMessage = '<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
           $(".message").append(zeroMessage);
+          console.log(zeroMessage);
         };
 
-        function successGet(data) {//成功
+        function successGet(data) {//成功し、アイテムとページャの追加の場合
+          console.log(data.hit);
           $.each(data.Items, function (i, element) {
             var list = //取得アイテムのテンプレ
               '<li class="lists__item">' + '<div class="lists__item__inner">' +
@@ -107,7 +107,7 @@
             $(".container").append(templePager); //ページの作成
         }
 
-        function error(data) {//各エラー
+        function failError(data) {//各エラー
           var errorMessage =　'<p class="error-message">その他のエラーが発生しました。</>';
           if (data.status === 400) {
             errorMessage =
