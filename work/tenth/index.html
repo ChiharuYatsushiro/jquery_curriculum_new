@@ -37,22 +37,23 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
-        $(".search__btn").on('click', function () {
-         getBooks();
-         $(".message").empty();
-         $("ul.list").empty();
+        $(".search__btn").on('click', function () {//検索ボタンを押したとき
+          getBooks();
+          $("ul.list").empty();
+          $(".message").empty();
         });
 
-        // $('次へボタン').on('click', function () {
-        //   getBooks()
-        // });
+        $('.btn-item[data-js="page-prev"]').on('click', function () {//次へボタンを押したとき
+          getBooks();
+        });
 
-        // $('前へボタン').on('click', function () {
-        //   getBooks()
-        // });
+        $('.btn-item[data-js="page-next"]').on('click', function () {//前へボタンを押したとき          
+          getBooks();
+        });
 
         function getBooks() {// 本を検索する処理
           var searchWord = $("input").val();
+          console.log(searchWord);
           $.ajax({
             url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522",
             type: "GET",
@@ -82,7 +83,8 @@
         };
 
         function successGet(data) {//成功し、アイテムとページャの追加の場合
-          console.log(data.hit);
+          console.log(data.hits);
+          console.log(data.page);
           $.each(data.Items, function (i, element) {
             var list = //取得アイテムのテンプレ
               '<li class="lists__item">' + '<div class="lists__item__inner">' +
