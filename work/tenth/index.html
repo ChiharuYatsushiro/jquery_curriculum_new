@@ -40,8 +40,11 @@
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           getBooks();
         });
-
-        $('.btn-item[data-js="page-next"]').on('click', function () {//次へボタンを押したとき
+        
+        var pageNum = 1;
+        
+        $('.btn-item[data-js="page-next"]').on('click', function (e) {//次へボタンを押したとき
+          e.preventDefault();
           getBooks();
         });
 
@@ -60,7 +63,7 @@
               applicationId: appId,
               booksGenreId: "001",
               hits: 20,
-              page: 1,
+              page: pageNum,
               keyword: searchWord,
             },
           }).done(function(data) {
