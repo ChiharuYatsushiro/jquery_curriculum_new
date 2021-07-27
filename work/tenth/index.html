@@ -42,7 +42,7 @@
         });
         
         var pageNum = 1;
-        
+
         $('.btn-item[data-js="page-next"]').on('click', function (e) {//次へボタンを押したとき
           e.preventDefault();
           getBooks();
@@ -102,7 +102,7 @@
               '<p class="lists__item__detail">作品名：' +
               data.Items[i].Item.title + "</p>" +
               '<p class="lists__item__detail">作者　：' +
-              data.Items[i].Item.author + "：</p>" +
+              data.Items[i].Item.author + "</p>" +
               '<p class="lists__item__detail">出版社：' +
               data.Items[i].Item.publisherName +
               "</p>" + "</a>" + "</div></li>";
