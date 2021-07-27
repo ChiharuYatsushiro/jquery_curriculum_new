@@ -39,15 +39,13 @@
       $(function () {
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           getBooks();
-          $("ul.list").empty();
-          $(".message").empty();
         });
 
-        $('.btn-item[data-js="page-prev"]').on('click', function () {//次へボタンを押したとき
+        $('.btn-item[data-js="page-next"]').on('click', function () {//次へボタンを押したとき
           getBooks();
         });
 
-        $('.btn-item[data-js="page-next"]').on('click', function () {//前へボタンを押したとき          
+        $('.btn-item[data-js="page-prev"]').on('click', function () {//前へボタンを押したとき          
           getBooks();
         });
 
@@ -66,12 +64,18 @@
               keyword: searchWord,
             },
           }).done(function(data) {
+            $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
+            $(".lists").empty();//処理に応じて重複表示を避けるためlistsを空にする
+            $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
             if(data.hits === 0 ){//成功だが、hitが0の場合
               successZero(data);
-            } else {////成功し、アイテムとページャの追加の場合
+            } else {//成功し、アイテムとページャの追加の場合
               successGet(data);
             }
           }).fail(function (data) {
+            $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
+            $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
+            $(".pager").remove();//pagerの表示回避するため親要素ごと取り払う
             failError(data);
           });
         }
@@ -130,8 +134,9 @@
           // console.log(data.responseJSON.error_description);
           $(".message").append(errorMessage);
         };
-      });
-      
+      }); 　
+
+
         // var pageNum = 0;
         // $(".search__btn").on("click", function () {
         //   $(".message").empty();
