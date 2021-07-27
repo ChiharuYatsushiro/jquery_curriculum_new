@@ -64,22 +64,24 @@
               keyword: searchWord,
             },
           }).done(function(data) {
-            $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
-            $(".lists").empty();//処理に応じて重複表示を避けるためlistsを空にする
-            $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
+            pageEmpty(data);
             if(data.hits === 0 ){//成功だが、hitが0の場合
               successZero(data);
             } else {//成功し、アイテムとページャの追加の場合
               successGet(data);
             }
           }).fail(function (data) {
-            $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
-            $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
-            $(".pager").remove();//pagerの表示回避するため親要素ごと取り払う
+            pageEmpty(data);
             failError(data);
           });
         }
         
+        function pageEmpty(data) {//ページの重複表示など避けるための各処理
+          $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
+          $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
+          $(".pager").remove();//pagerの表示回避するため親要素ごと取り払う
+        }
+
         function successZero(data) {//成功だが、hitが0の場合
           var zeroMessage = '<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
           $(".message").append(zeroMessage);
