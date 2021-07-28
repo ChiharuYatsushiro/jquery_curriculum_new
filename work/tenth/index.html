@@ -37,19 +37,21 @@
     <script src="./js/appid.js"></script>
     <script>
       $(function () {
+        var pageNum = 1;
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           getBooks();
         });
-        
-        var pageNum = 1;
 
-        $('.btn-item[data-js="page-next"]').on('click', function (e) {//次へボタンを押したとき
+        $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へボタンを押したとき
           e.preventDefault();
           getBooks();
+          pageNum++;
         });
 
-        $('.btn-item[data-js="page-prev"]').on('click', function () {//前へボタンを押したとき          
+        $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へボタンを押したとき
+          e.preventDefault();
           getBooks();
+          pageNum--;
         });
 
         function getBooks() {// 本を検索する処理
