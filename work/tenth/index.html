@@ -44,14 +44,14 @@
 
         $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へボタンを押したとき
           e.preventDefault();
-          getBooks();
           pageNum++;
+          getBooks();
         });
 
         $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へボタンを押したとき
           e.preventDefault();
-          getBooks();
           pageNum--;
+          getBooks();
         });
 
         function getBooks() {// 本を検索する処理
@@ -84,7 +84,7 @@
         function pageEmpty(data) {//ページの重複表示など避けるための各処理
           $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
           $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
-          $(".pager").remove();//pagerの表示回避するため親要素ごと取り払う
+          $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
         }
 
         function successZero(data) {//成功だが、hitが0の場合
