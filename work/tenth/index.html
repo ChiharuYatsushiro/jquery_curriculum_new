@@ -85,7 +85,7 @@
           $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
           $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
           $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
-        }
+        };
 
         function successZero(data) {//成功だが、hitが0の場合
           var zeroMessage = '<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
@@ -118,7 +118,15 @@
               '<a class="btn-item " data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
             $(".container").append(templePager); //ページの作成
-        }
+            $(".btn-item").on("click", function (e) {
+              e.preventDefault(); //aタグの無効化
+            });
+            if(pageNum <= 1){
+              $('.btn-item[data-js="page-prev"]').addClass("disabled").prop("disabled", true);
+            } else if (pageNum >= data.count){
+              $('.btn-item[data-js="page-next"]').addClass("disabled").prop("disabled", true);
+            }
+        };
 
         function failError(data) {//各エラー
           var errorMessage =　'<p class="error-message">その他のエラーが発生しました。</>';
