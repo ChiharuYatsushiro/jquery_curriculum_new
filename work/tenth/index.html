@@ -79,11 +79,11 @@
             pageEmpty(data);
             failError(data);
           });
-        }
+        };
         
         function pageEmpty(data) {//ページの重複表示など避けるための各処理
           $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
-          $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
+          $("ul.lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
           $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
         };
 
@@ -121,10 +121,11 @@
             $(".btn-item").on("click", function (e) {
               e.preventDefault(); //aタグの無効化
             });
-            if(pageNum <= 1){
+            if (data.pageCount === 1){//ページが1ページしかないとき
+              $('.btn-item').addClass("disabled").prop("disabled", true);
+            } else if (data.page === 1){//最初のページ
               $('.btn-item[data-js="page-prev"]').addClass("disabled").prop("disabled", true);
-            } 
-            else if (pageNum >=	data.page){//Todo
+            } else if (data.page === data.pageCount) {//最後のページ
               $('.btn-item[data-js="page-next"]').addClass("disabled").prop("disabled", true);
             }
         };
