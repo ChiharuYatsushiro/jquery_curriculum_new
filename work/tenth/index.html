@@ -123,7 +123,8 @@
             });
             if(pageNum <= 1){
               $('.btn-item[data-js="page-prev"]').addClass("disabled").prop("disabled", true);
-            } else if (pageNum >= data.count){
+            } 
+            else if (pageNum >=	data.page){//Todo
               $('.btn-item[data-js="page-next"]').addClass("disabled").prop("disabled", true);
             }
         };
