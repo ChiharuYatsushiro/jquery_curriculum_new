@@ -38,7 +38,8 @@
     <script>
       $(function () {
         var pageNum = 1;//グローバル変数
-        
+        var searchWord = $("input").val();
+
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           pageNum =  1;//pageの値を1に戻す
           getBooks();
@@ -57,7 +58,6 @@
         });
 
         function getBooks() {// 本を検索する処理
-          var searchWord = $("input").val();
           $.ajax({
             url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522",
             type: "GET",
@@ -112,7 +112,7 @@
               '<div class="pager" data-js="pager">' +　
               '<div class="counter">' + '<span class="counter-current">' +　data.page +　'</span>/<span class="counter-all">' +　data.pageCount +　"</span>" +　"</div>" +
               '<div class="btn-wrapper">' +
-              '<a class="btn-item " data-js="page-prev" href="">前へ</a>' +
+              '<a class="btn-item" data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
             $(".container").append(templePager); //ページの追加
             $(".btn-item").click(function (e) {
@@ -128,7 +128,7 @@
         };
 
         function failError(data) {//ステータスコードに応じた各エラー
-          var errorMessage =　'<p class="error-message">その他のエラーが発生しました。</p>';
+          var errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
           if (data.status === 400) {
             errorMessage =
               '<p class="error-message">検索文字が入力されていません。</p>';
