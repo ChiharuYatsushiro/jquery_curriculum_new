@@ -38,18 +38,19 @@
     <script>
       $(function () {
         var pageNum = 1;//グローバル変数
+        
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           pageNum =  1;//pageの値を1に戻す
           getBooks();
         });
 
-        $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へボタンを押したとき
+        $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へを押したとき
           e.preventDefault();
           pageNum++;
           getBooks();
         });
 
-        $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へボタンを押したとき
+        $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へを押したとき
           e.preventDefault();
           pageNum--;
           getBooks();
@@ -57,12 +58,11 @@
 
         function getBooks() {// 本を検索する処理
           var searchWord = $("input").val();
-          console.log(searchWord);
           $.ajax({
             url: "https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522",
             type: "GET",
             datatype: "json",
-            data: {
+            data: {//サービス固有パラメーター
               applicationId: appId,
               booksGenreId: "001",
               hits: 20,
@@ -84,19 +84,16 @@
         
         function pageEmpty(data) {//ページの重複表示など避けるための各処理
           $(".message").empty();//処理に応じて重複表示を避けるためmessageを空にする
-          $(".lists").empty();//処理の応じて重複表示を避けるためmessageを空にする
-          $(".pager").remove();//pagerの重複表示回避するため親要素ごと取り払う
+          $(".lists").empty();//処理に応じて重複表示を避けるためlists空にする
+          $(".pager").remove();//pagerの重複表示回避するためpagerの要素だけ取り払う
         };
 
         function successZero(data) {//成功だが、hitが0の場合
-          var zeroMessage = '<p class="error-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
-          $(".message").append(zeroMessage);
-          console.log(zeroMessage);
+          var zeroMessage = '<p class="zero-message">検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>';
+          $(".message").append(zeroMessage);//massageクラスに追加
         };
 
         function successGet(data) {//成功し、アイテムとページャの追加の場合
-          console.log(data.hits);
-          console.log(data.page);
           $.each(data.Items, function (i, element) {
             var list = //取得アイテムのテンプレ
               '<li class="lists__item">' + '<div class="lists__item__inner">' +
@@ -109,8 +106,7 @@
               '<p class="lists__item__detail">出版社：' +
               data.Items[i].Item.publisherName +
               "</p>" + "</a>" + "</div></li>";
-            $(".lists").append(list);
-            console.log(data.Items[i].Item.title);
+            $(".lists").append(list);//ulのクラスに追加
           });
           var templePager = //ページャのテンプレ
               '<div class="pager" data-js="pager">' +　
@@ -118,8 +114,8 @@
               '<div class="btn-wrapper">' +
               '<a class="btn-item " data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
-            $(".container").append(templePager); //ページの作成
-            $(".btn-item").on("click", function (e) {
+            $(".container").append(templePager); //ページの追加
+            $(".btn-item").click(function (e) {
               e.preventDefault(); //aタグの無効化
             });
             if (data.pageCount === 1){//ページが1ページしかないとき
@@ -131,31 +127,27 @@
             };
         };
 
-        function failError(data) {//各エラー
-          var errorMessage =　'<p class="error-message">その他のエラーが発生しました。</>';
+        function failError(data) {//ステータスコードに応じた各エラー
+          var errorMessage =　'<p class="error-message">その他のエラーが発生しました。</p>';
           if (data.status === 400) {
             errorMessage =
-              '<p class="error-message">検索文字が入力されていません。</>';
+              '<p class="error-message">検索文字が入力されていません。</p>';
           } else if (data.status === 404) {
             errorMessage =
-              '<p class="error-message">対象のデータが存在しません。</>';
+              '<p class="error-message">対象のデータが存在しません。</p>';
           } else if (data.status === 429) {
             errorMessage =
-              '<p class="error-message">リクエストが多すぎます。</>';
+              '<p class="error-message">リクエストが多すぎます。</p>';
           } else if (data.status === 500) {
             errorMessage =
-              '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</>';
+              '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
           } else if (data.status === 503) {
             errorMessage =
-              '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</>';
+              '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
           };
           $(".message").append(errorMessage);
-          console.log(data.responseJSON.error_description);
         };
       });
-
-      // 【API（Application Programming Interface）とは】
-      // - 外部サーバーからデータの一部を拝借し、連帯して利用ができるもの？
 
       // 【httpメソッドのGETとPOSTの説明】
       // - [HTTPとは？]サーバとブラウザなどの送受信をするための取り決め。交通ルールのようなもの。
