@@ -38,12 +38,13 @@
     <script>
       $(function () {
         var pageNum = 1;//グローバル変数
-        var searchWord = $("input").val();
 
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
-          pageNum =  1;//pageの値を1に戻す
+          pageNum =  1;//pageの値を1に戻る
+          searchWord = $("input").val();//検索ボタンを押したら値を取得
           getBooks();
         });
+        var searchWord = "";//検索で取得した値がグローバル変数に返ってくるようにする
 
         $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へを押したとき
           e.preventDefault();
