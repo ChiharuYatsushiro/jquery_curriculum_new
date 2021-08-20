@@ -94,17 +94,17 @@
         };
 
         function successGet(data) {//成功し、アイテムとページャの追加の場合
-          $.each(data.Items, function (i, element) {
+          $.each(data.Items, function (i, item) {
             var list = //取得アイテムのテンプレ
               '<li class="lists__item">' + '<div class="lists__item__inner">' +
-              '<a href="' + data.Items[i].Item.itemUrl + '" class="lists__item__link" target="_blank">' +
-              '<img src="' + data.Items[i].Item.largeImageUrl + '" class="lists__item__img" alt="' + data.Items[i].Item.title + '">' +
+              '<a href="' + item.Item.title + '" class="lists__item__link" target="_blank">' +
+              '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
               '<p class="lists__item__detail">作品名：' +
-              data.Items[i].Item.title + "</p>" +
+              item.Item.title + "</p>" +
               '<p class="lists__item__detail">作者　：' +
-              data.Items[i].Item.author + "</p>" +
+              item.Item.author + "</p>" +
               '<p class="lists__item__detail">出版社：' +
-              data.Items[i].Item.publisherName +
+              item.Item.publisherName +
               "</p>" + "</a>" + "</div></li>";
             $(".lists").append(list);//ulのクラスに追加
           });
@@ -120,16 +120,15 @@
             $(".lists").after(templePager); //ページの追加
             $(".btn-item").click(function (e) {
               e.preventDefault(); //aタグの無効化
-              return false;
             });
             if (data.pageCount === 1){//ページが1ページしかないとき
               $('.btn-item').addClass("disabled");
             }
             if (data.page === 1){//最初のページ
-              $('.btn-item[data-js="page-prev"]').addClass("disabled")
+              $('.btn-item[data-js="page-prev"]').addClass("disabled");
             }
             if (data.page === data.pageCount) {//最後のページ
-              $('.btn-item[data-js="page-next"]').addClass("disabled")
+              $('.btn-item[data-js="page-next"]').addClass("disabled");
             };
         };
 
