@@ -46,14 +46,12 @@
         });
         var searchWord = "";//検索で取得した値がグローバル変数に上書きされる
 
-        $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へを押したとき
-          e.preventDefault();
+        $('.container').on('click', '.btn-item[data-js="page-next"]', function () {//次へを押したとき
           pageNum++;
           getBooks();
         });
 
-        $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へを押したとき
-          e.preventDefault();
+        $('.container').on('click','.btn-item[data-js="page-prev"]',  function () {//前へを押したとき
           pageNum--;
           getBooks();
         });
@@ -76,6 +74,7 @@
               successZero(data);
             } else {//成功し、アイテムとページャの追加の場合
               successGet(data);
+              pagerGet(data);
             }
           }).fail(function (data) {
             pageEmpty(data);
@@ -109,42 +108,51 @@
               "</p>" + "</a>" + "</div></li>";
             $(".lists").append(list);//ulのクラスに追加
           });
+        };
+
+        function pagerGet(data) {
           var templePager = //ページャのテンプレ
               '<div class="pager" data-js="pager">' +　
               '<div class="counter">' + '<span class="counter-current">' +　data.page +　'</span>/<span class="counter-all">' +　data.pageCount +　"</span>" +　"</div>" +
               '<div class="btn-wrapper">' +
               '<a class="btn-item" data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
-            $(".container").append(templePager); //ページの追加
+            $(".lists").after(templePager); //ページの追加
             $(".btn-item").click(function (e) {
               e.preventDefault(); //aタグの無効化
+              return false;
             });
             if (data.pageCount === 1){//ページが1ページしかないとき
-              $('.btn-item').addClass("disabled").prop("disabled", true);
-            } else if (data.page === 1){//最初のページ
-              $('.btn-item[data-js="page-prev"]').addClass("disabled").prop("disabled", true);
-            } else if (data.page === data.pageCount) {//最後のページ
-              $('.btn-item[data-js="page-next"]').addClass("disabled").prop("disabled", true);
+              $('.btn-item').addClass("disabled");
+            }
+            if (data.page === 1){//最初のページ
+              $('.btn-item[data-js="page-prev"]').addClass("disabled")
+            }
+            if (data.page === data.pageCount) {//最後のページ
+              $('.btn-item[data-js="page-next"]').addClass("disabled")
             };
         };
 
         function failError(data) {//ステータスコードに応じた各エラー
-          var errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
-          if (data.status === 400) {//パラメーターエラー (必須パラメータ不足)
-            errorMessage =
-              '<p class="error-message">検索文字が入力されていません。</p>';
-          } else if (data.status === 404) {//対象のデータが存在しなかった場合
-            errorMessage =
-              '<p class="error-message">対象のデータが存在しません。</p>';
-          } else if (data.status === 429) {//リクエスト過多 (各ユーザ制限値超過)
-            errorMessage =
-              '<p class="error-message">リクエストが多すぎます。</p>';
-          } else if (data.status === 500) {//	楽天ウェブサービス内のエラー
-            errorMessage =
-              '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
-          } else if (data.status === 503) {//メンテナンス・リクエスト過多 (全ユーザ制限値超過)
-            errorMessage =
-              '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
+          var errorMessage =　'<p class="error-message">""</p>';
+          switch(data.status){
+            case 400:
+              errorMessage = '<p class="error-message">検索文字が入力されていません。</p>';
+            break;
+            case 404:
+            errorMessage = '<p class="error-message">対象のデータが存在しません。</p>';
+            break;
+            case 429:
+            errorMessage = '<p class="error-message">リクエストが多すぎます。</p>';
+            break;
+            case 500:
+            errorMessage = '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
+            break;
+            case 503:
+            errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
+            break;
+            case 0:
+            errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
           };
           $(".message").append(errorMessage);
         };
