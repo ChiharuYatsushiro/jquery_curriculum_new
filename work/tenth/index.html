@@ -44,7 +44,7 @@
           searchWord = $("input").val();//検索ボタンを押したら値を取得
           getBooks();
         });
-        var searchWord = "";//検索で取得した値がグローバル変数に返ってくるようにする
+        var searchWord = "";//検索で取得した値がグローバル変数に上書きされる
 
         $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へを押したとき
           e.preventDefault();
@@ -130,19 +130,19 @@
 
         function failError(data) {//ステータスコードに応じた各エラー
           var errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
-          if (data.status === 400) {
+          if (data.status === 400) {//パラメーターエラー (必須パラメータ不足)
             errorMessage =
               '<p class="error-message">検索文字が入力されていません。</p>';
-          } else if (data.status === 404) {
+          } else if (data.status === 404) {//対象のデータが存在しなかった場合
             errorMessage =
               '<p class="error-message">対象のデータが存在しません。</p>';
-          } else if (data.status === 429) {
+          } else if (data.status === 429) {//リクエスト過多 (各ユーザ制限値超過)
             errorMessage =
               '<p class="error-message">リクエストが多すぎます。</p>';
-          } else if (data.status === 500) {
+          } else if (data.status === 500) {//	楽天ウェブサービス内のエラー
             errorMessage =
               '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
-          } else if (data.status === 503) {
+          } else if (data.status === 503) {//メンテナンス・リクエスト過多 (全ユーザ制限値超過)
             errorMessage =
               '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
           };
