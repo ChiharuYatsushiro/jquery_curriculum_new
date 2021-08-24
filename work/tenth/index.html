@@ -38,6 +38,7 @@
     <script>
       $(function () {
         var pageNum = 1;//グローバル変数
+        var pageCount = 1;
 
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           pageNum =  1;//pageの値を1に戻る
@@ -47,13 +48,27 @@
         var searchWord = "";//検索で取得した値がグローバル変数に上書きされる
 
         $('.container').on('click', '.btn-item[data-js="page-next"]', function () {//次へを押したとき
-          pageNum++;
-          getBooks();
+          if (pageCount === 1){//ページが1ページしかないとき
+            return false;
+          }
+          if (pageNum === pageCount){//最後のページ
+            return false;
+          } else {
+            pageNum++;
+            getBooks();
+          }
         });
 
         $('.container').on('click','.btn-item[data-js="page-prev"]',  function () {//前へを押したとき
-          pageNum--;
-          getBooks();
+          if (pageCount === 1){//ページが1ページしかないとき
+            return false;
+          }
+          if (pageNum === 1){//最初のページ
+            return false;
+          } else {
+            pageNum--;
+            getBooks();
+          }
         });
 
         function getBooks() {// 本を検索する処理
@@ -73,6 +88,7 @@
             if(data.hits === 0 ){//成功だが、hitが0の場合
               successZero(data);
             } else {//成功し、アイテムとページャの追加の場合
+              pageCount = data.pageCount;
               successGet(data);
               pagerGet(data);
             }
@@ -113,7 +129,7 @@
         function pagerGet(data) {
           var templePager = //ページャのテンプレ
               '<div class="pager" data-js="pager">' +　
-              '<div class="counter">' + '<span class="counter-current">' +　data.page +　'</span>/<span class="counter-all">' +　data.pageCount +　"</span>" +　"</div>" +
+              '<div class="counter">' + '<span class="counter-current">' +　pageNum +　'</span>/<span class="counter-all">' +　pageCount +　"</span>" +　"</div>" +
               '<div class="btn-wrapper">' +
               '<a class="btn-item" data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
@@ -121,13 +137,13 @@
             $(".btn-item").click(function (e) {
               e.preventDefault(); //aタグの無効化
             });
-            if (data.pageCount === 1){//ページが1ページしかないとき
+            if (pageCount === 1){//ページが1ページしかないとき
               $('.btn-item').addClass("disabled");
             }
-            if (data.page === 1){//最初のページ
+            if (pageNum === 1){//最初のページ
               $('.btn-item[data-js="page-prev"]').addClass("disabled");
             }
-            if (data.page === data.pageCount) {//最後のページ
+            if (pageNum === pageCount) {//最後のページ
               $('.btn-item[data-js="page-next"]').addClass("disabled");
             };
         };
@@ -137,21 +153,21 @@
           switch(data.status){
             case 400:
               errorMessage = '<p class="error-message">検索文字が入力されていません。</p>';
-            break;
+              break;
             case 404:
-            errorMessage = '<p class="error-message">対象のデータが存在しません。</p>';
-            break;
+              errorMessage = '<p class="error-message">対象のデータが存在しません。</p>';
+              break;
             case 429:
-            errorMessage = '<p class="error-message">リクエストが多すぎます。</p>';
-            break;
+              errorMessage = '<p class="error-message">リクエストが多すぎます。</p>';
+              break;
             case 500:
-            errorMessage = '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
-            break;
+              errorMessage = '<p class="error-message">楽天ウェブサービス内でエラーが発生しました。</p>';
+              break;
             case 503:
-            errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
-            break;
+              errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
+              break;
             case 0:
-            errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
+              errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
           };
           $(".message").append(errorMessage);
         };
