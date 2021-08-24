@@ -38,7 +38,7 @@
     <script>
       $(function () {
         var pageNum = 1;//グローバル変数
-        var pageCount = 1;
+        var pageCountNum = 1;
 
         $(".search__btn").on('click', function () {//検索ボタンを押したとき
           pageNum =  1;//pageの値を1に戻る
@@ -48,10 +48,10 @@
         var searchWord = "";//検索で取得した値がグローバル変数に上書きされる
 
         $('.container').on('click', '.btn-item[data-js="page-next"]', function () {//次へを押したとき
-          if (pageCount === 1){//ページが1ページしかないとき
+          if (pageCountNum === 1){//ページが1ページしかないとき
             return false;
           }
-          if (pageNum === pageCount){//最後のページ
+          if (pageNum === pageCountNum){//最初のページ
             return false;
           } else {
             pageNum++;
@@ -60,7 +60,7 @@
         });
 
         $('.container').on('click','.btn-item[data-js="page-prev"]',  function () {//前へを押したとき
-          if (pageCount === 1){//ページが1ページしかないとき
+          if (pageCountNum === 1){//ページが1ページしかないとき
             return false;
           }
           if (pageNum === 1){//最初のページ
@@ -88,7 +88,6 @@
             if(data.hits === 0 ){//成功だが、hitが0の場合
               successZero(data);
             } else {//成功し、アイテムとページャの追加の場合
-              pageCount = data.pageCount;
               successGet(data);
               pagerGet(data);
             }
@@ -127,9 +126,10 @@
         };
 
         function pagerGet(data) {
+          pageCountNum = data.pageCount;
           var templePager = //ページャのテンプレ
               '<div class="pager" data-js="pager">' +　
-              '<div class="counter">' + '<span class="counter-current">' +　pageNum +　'</span>/<span class="counter-all">' +　pageCount +　"</span>" +　"</div>" +
+              '<div class="counter">' + '<span class="counter-current">' +　pageNum +　'</span>/<span class="counter-all">' +　pageCountNum +　"</span>" +　"</div>" +
               '<div class="btn-wrapper">' +
               '<a class="btn-item" data-js="page-prev" href="">前へ</a>' +
               '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
@@ -137,13 +137,13 @@
             $(".btn-item").click(function (e) {
               e.preventDefault(); //aタグの無効化
             });
-            if (pageCount === 1){//ページが1ページしかないとき
+            if (pageCountNum === 1){//ページが1ページしかないとき
               $('.btn-item').addClass("disabled");
             }
             if (pageNum === 1){//最初のページ
               $('.btn-item[data-js="page-prev"]').addClass("disabled");
             }
-            if (pageNum === pageCount) {//最後のページ
+            if (pageNum === pageCountNum) {//最後のページ
               $('.btn-item[data-js="page-next"]').addClass("disabled");
             };
         };
@@ -166,7 +166,7 @@
             case 503:
               errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
               break;
-            case 0:
+            default:
               errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
           };
           $(".message").append(errorMessage);
