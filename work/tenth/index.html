@@ -166,8 +166,11 @@
             case 503:
               errorMessage = '<p class="error-message">サーバーアクセス数の制限を超えているため、訪問者の閲覧を制限しています。</p>';
               break;
-            default:
+            case 0:
               errorMessage =　'<p class="error-message">通信に失敗しました。インターネットの接続をご確認ください。</p>';
+              break;
+            default:
+              errorMessage =  '<p class="error-message">エラーが発生しました。</p>';
           };
           $(".message").append(errorMessage);
         };
