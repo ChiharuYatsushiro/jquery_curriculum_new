@@ -47,28 +47,22 @@
         });
         var searchWord = "";//検索で取得した値がグローバル変数に上書きされる
 
-        $('.container').on('click', '.btn-item[data-js="page-next"]', function () {//次へを押したとき
-          if (pageCountNum === 1){//ページが1ページしかないとき
-            return false;
-          }
+        $('.container').on('click', '.btn-item[data-js="page-next"]', function (e) {//次へを押したとき
+          e.preventDefault();
           if (pageNum === pageCountNum){//最初のページ
             return false;
-          } else {
-            pageNum++;
-            getBooks();
           }
+          pageNum++;
+          getBooks();
         });
 
-        $('.container').on('click','.btn-item[data-js="page-prev"]',  function () {//前へを押したとき
-          if (pageCountNum === 1){//ページが1ページしかないとき
-            return false;
-          }
+        $('.container').on('click','.btn-item[data-js="page-prev"]',  function (e) {//前へを押したとき
+          e.preventDefault();
           if (pageNum === 1){//最初のページ
             return false;
-          } else {
-            pageNum--;
-            getBooks();
           }
+          pageNum--;
+          getBooks();
         });
 
         function getBooks() {// 本を検索する処理
@@ -109,37 +103,38 @@
         };
 
         function successGet(data) {//成功し、アイテムとページャの追加の場合
+          var list = '';//変数に空の文字列を代入
           $.each(data.Items, function (i, item) {
-            var list = //取得アイテムのテンプレ
-              '<li class="lists__item">' + '<div class="lists__item__inner">' +
+            list +=//結合代入演算子
+              '<li class="lists__item">' +
+              '<div class="lists__item__inner">' +
               '<a href="' + item.Item.title + '" class="lists__item__link" target="_blank">' +
               '<img src="' + item.Item.largeImageUrl + '" class="lists__item__img" alt="' + item.Item.title + '">' +
-              '<p class="lists__item__detail">作品名：' +
-              item.Item.title + "</p>" +
-              '<p class="lists__item__detail">作者　：' +
-              item.Item.author + "</p>" +
-              '<p class="lists__item__detail">出版社：' +
-              item.Item.publisherName +
-              "</p>" + "</a>" + "</div></li>";
-            $(".lists").append(list);//ulのクラスに追加
+              '<p class="lists__item__detail">作品名：' + item.Item.title + "</p>" +
+              '<p class="lists__item__detail">作者　：' + item.Item.author + "</p>" +
+              '<p class="lists__item__detail">出版社：' + item.Item.publisherName + "</p>" +
+              "</a>" +
+              "</div>" +
+              "</li>";
           });
+          $(".lists").append(list);
         };
 
         function pagerGet(data) {
           pageCountNum = data.pageCount;
           var templePager = //ページャのテンプレ
               '<div class="pager" data-js="pager">' +　
-              '<div class="counter">' + '<span class="counter-current">' +　pageNum +　'</span>/<span class="counter-all">' +　pageCountNum +　"</span>" +　"</div>" +
+              '<div class="counter">' +
+              '<span class="counter-current">' +　pageNum +　'</span>' +
+              '/' +
+              '<span class="counter-all">' +　pageCountNum +　"</span>" +　
+              "</div>" +
               '<div class="btn-wrapper">' +
               '<a class="btn-item" data-js="page-prev" href="">前へ</a>' +
-              '<a class="btn-item" data-js="page-next" href="">次へ</a>' + '</div>' + '</div>';
+              '<a class="btn-item" data-js="page-next" href="">次へ</a>' +
+              '</div>' +
+              '</div>';
             $(".lists").after(templePager); //ページの追加
-            $(".btn-item").click(function (e) {
-              e.preventDefault(); //aタグの無効化
-            });
-            if (pageCountNum === 1){//ページが1ページしかないとき
-              $('.btn-item').addClass("disabled");
-            }
             if (pageNum === 1){//最初のページ
               $('.btn-item[data-js="page-prev"]').addClass("disabled");
             }
